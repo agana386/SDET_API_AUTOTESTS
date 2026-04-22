@@ -25,3 +25,4 @@ allure serve allure-results
 
 ## Allure Report
 ![Allure](./Allure_result.png)
+
