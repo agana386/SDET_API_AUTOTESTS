@@ -15,13 +15,7 @@ def test_create_post(client):
     }
 
     with allure.step("Отправка POST запроса"):
-        response = client.create_post(payload)
-
-    with allure.step("Проверка статуса ответа"):
-        assert response.status_code == 201
-
-    with allure.step("Десериализация ответа"):
-        post = Post(**response.json())
+        post = client.create_post(payload)
 
     with allure.step("Проверка данных"):
         assert post.title == payload["title"]
@@ -32,18 +26,12 @@ def test_create_post(client):
 @allure.feature("GET API")
 @allure.story("Get post")
 @allure.title("Получение поста")
-def test_get_post(client):
+def test_get_post(client, created_post):
     with allure.step("Отправка GET запроса"):
-        response = client.get_post(POST_ID)
-
-    with allure.step("Проверка статуса ответа"):
-        assert response.status_code == 200
-
-    with allure.step("Десериализация ответа"):
-        post = Post(**response.json())
+        post = client.get_post(created_post.id)
 
     with allure.step("Проверка данных"):
-        assert post.id == POST_ID
+        assert post.id == created_post.id
 
 
 @allure.feature("Get all API")
@@ -51,32 +39,21 @@ def test_get_post(client):
 @allure.title("Получение всех постов")
 def test_get_all_posts(client):
     with allure.step("Отправка GET запроса"):
-        response = client.get_all_posts()
-
-    with allure.step("Проверка статуса ответа"):
-        assert response.status_code == 200
-
-    with allure.step("Десериализация ответа"):
-        posts = [Post(**item) for item in response.json()]
+        posts = client.get_all_posts()
 
     with allure.step("Проверка данных"):
         assert len(posts) > 0
+        assert all(isinstance(post, Post) for post in posts)
 
 
 @allure.feature("Patch API")
 @allure.story("Change post")
 @allure.title("Изменение поста")
-def test_patch_post(client):
+def test_patch_post(client, created_post):
     payload = {"title": "updated title"}
 
     with allure.step("Отправка PATCH запроса"):
-        response = client.patch_post(POST_ID, payload)
-
-    with allure.step("Проверка статуса ответа"):
-        assert response.status_code == 200
-
-    with allure.step("Десериализация ответа"):
-        post = Post(**response.json())
+        post = client.patch_post(created_post.id, payload)
 
     with allure.step("Проверка данных"):
         assert post.title == payload["title"]
@@ -85,12 +62,9 @@ def test_patch_post(client):
 @allure.feature("Delete API")
 @allure.story("Delete post")
 @allure.title("Удаление поста")
-def test_delete_post(client):
+def test_delete_post(client, created_post):
     with allure.step("Отправка DELETE запроса"):
-        response = client.delete_post(POST_ID)
-
-    with allure.step("Проверка статуса ответа"):
-        assert response.status_code == 200
+        result = client.delete_post(created_post.id)
 
     with allure.step("Проверка пустого тела ответа"):
-        assert response.json() == {}
+        assert result == {}
