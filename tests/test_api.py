@@ -1,8 +1,6 @@
 from models.entity import Post
 import allure
 
-POST_ID = 1
-
 
 @allure.feature("Posts API")
 @allure.story("Create post")

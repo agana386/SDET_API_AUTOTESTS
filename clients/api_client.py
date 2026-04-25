@@ -51,8 +51,6 @@ class ApiClient:
     def get_all_posts(self) -> List[Post]:
         return [Post(**item) for item in self._get_all_posts_raw().json()]
 
-    from models.entity import Post, PostPartial
-
     def patch_post(self, post_id: int, payload: dict) -> PostPartial:
         return PostPartial(**self._patch_post_raw(post_id, payload).json())
 
