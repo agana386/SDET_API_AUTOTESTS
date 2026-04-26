@@ -1,3 +1,4 @@
+# tests/test_api.py
 from models.entity import Post
 import allure
 
@@ -35,12 +36,12 @@ def test_get_post(client, created_post):
 @allure.feature("Get all API")
 @allure.story("Get all posts")
 @allure.title("Получение всех постов")
-def test_get_all_posts(client):
+def test_get_all_posts(client, created_post):
     with allure.step("Отправка GET запроса"):
         posts = client.get_all_posts()
 
     with allure.step("Проверка данных"):
-        assert len(posts) > 0
+        assert len(posts) > 0, "В системе нет постов — база пустая или API вернул пустой список"
         assert all(isinstance(post, Post) for post in posts)
 
 

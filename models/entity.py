@@ -1,3 +1,4 @@
+# models/entity.py
 from pydantic import BaseModel
 
 

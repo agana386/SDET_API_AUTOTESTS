@@ -14,6 +14,7 @@ api_tests/
 ├── .github/workflows/autotests.yml
 ├── clients/
 │   └── api_client.py
+    └── post_api.py
 ├── models/
 │   └── entity.py
 ├── tests/
