@@ -1,7 +1,6 @@
 # clients/api_client.py
 import requests
 import functools
-from config import BASE_URL
 
 
 def check_status(*default_codes):
@@ -19,8 +18,6 @@ def check_status(*default_codes):
 
 
 class ApiClient:
-    BASE_URL = BASE_URL
-
     @check_status(200, 201)
     def _get(self, url: str) -> requests.Response:
         return requests.get(url)
